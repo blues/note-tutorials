@@ -42,7 +42,6 @@ void setup() {
 }
 
 #define POLL_INTERVAL_SEC 10
-#define INBOUND_QUEUE_NOTEFILE "led-command.qi"
 
 void loop() {
   // Toggle the LED as necessary
@@ -64,7 +63,7 @@ void loop() {
   while(true){
     // Build request for note in queue
     J* req = NoteNewRequest("note.get");
-    JAddStringToObject(req, "file", INBOUND_QUEUE_NOTEFILE);
+    JAddStringToObject(req, "file", "led-command.qi");
 		JAddBoolToObject(req, "delete", true);
 
     // Request note from Notecard
