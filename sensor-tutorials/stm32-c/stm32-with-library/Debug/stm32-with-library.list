@@ -4429,7 +4429,7 @@ int main(void)
  80024de:	487d      	ldr	r0, [pc, #500]	; (80026d4 <main+0x320>)
  80024e0:	f006 fd0a 	bl	8008ef8 <NoteSetFnSerial>
 
-  J *req = NoteNewRequest("service.set");
+  J *req = NoteNewRequest("hub.set");
  80024e4:	487c      	ldr	r0, [pc, #496]	; (80026d8 <main+0x324>)
  80024e6:	f006 fe79 	bl	80091dc <NoteNewRequest>
  80024ea:	6638      	str	r0, [r7, #96]	; 0x60
@@ -6158,7 +6158,7 @@ void DebugMon_Handler(void)
 08002f8e <PendSV_Handler>:
 
 /**
-  * @brief This function handles Pendable request for system service.
+  * @brief This function handles Pendable request for system hub.
   */
 void PendSV_Handler(void)
 {

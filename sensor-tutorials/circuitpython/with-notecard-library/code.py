@@ -11,7 +11,7 @@ productUID  = "com.your-company.your-project"
 serial = busio.UART(board.TX, board.RX, baudrate=9600)
 card = notecard.OpenSerial(serial)
 
-req = {"req": "service.set"}
+req = {"req": "hub.set"}
 req["product"] = productUID
 req["mode"] = "continuous"
 rsp = card.Transaction(req)

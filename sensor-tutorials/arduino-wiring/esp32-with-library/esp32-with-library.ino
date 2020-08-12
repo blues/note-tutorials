@@ -18,7 +18,7 @@ void setup() {
 
   NoteInitSerial(serialNotecard, 9600);
 
-  J *req = NoteNewRequest("service.set");
+  J *req = NoteNewRequest("hub.set");
   JAddStringToObject(req, "product", productUID);
   JAddStringToObject(req, "mode", "continuous");
   NoteRequest(req);

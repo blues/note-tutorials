@@ -107,7 +107,7 @@ bool getProductId(char* productId, unsigned int bufferLength)
     return(false);
   
   NoteSuspendTransactionDebug();
-  J *rsp = NoteRequestResponse(NoteNewRequest("service.get"));
+  J *rsp = NoteRequestResponse(NoteNewRequest("hub.get"));
   NoteResumeTransactionDebug();
 
   if (rsp == NULL)

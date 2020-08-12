@@ -47,7 +47,7 @@ void loop() {
   
   if (forceSync){
     // Request Notecard to sync
-    NoteRequest(NoteNewRequest("service.sync"));
+    NoteRequest(NoteNewRequest("hub.sync"));
     
     forceSync = false;
     return;
@@ -95,7 +95,7 @@ bool getProductId(char* productId, unsigned int bufferLength)
     return(false);
   
   NoteSuspendTransactionDebug();
-  J *rsp = NoteRequestResponse(NoteNewRequest("service.get"));
+  J *rsp = NoteRequestResponse(NoteNewRequest("hub.get"));
   NoteResumeTransactionDebug();
 
   if (rsp == NULL)

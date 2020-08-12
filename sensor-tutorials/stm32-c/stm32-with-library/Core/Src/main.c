@@ -180,7 +180,7 @@ int main(void)
   NoteSetFn(malloc, free, delay, millis);
   NoteSetFnSerial(noteSerialReset, noteSerialTransmit, noteSerialAvailable, noteSerialReceive);
 
-  J *req = NoteNewRequest("service.set");
+  J *req = NoteNewRequest("hub.set");
   JAddStringToObject(req, "product", myProductUID);
   JAddStringToObject(req, "mode", "continuous");
 

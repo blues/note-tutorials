@@ -12,7 +12,7 @@ serial = busio.UART(board.TX, board.RX, baudrate=9600)
 # Flush the Notecard buffer and set the ProductUID
 serial.write(b'\n')
 
-req = {"req": "service.set"}
+req = {"req": "hub.set"}
 req["product"] = productUID
 req["mode"] = "continuous"
 serial.write(bytearray(json.dumps(req)))
