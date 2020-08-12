@@ -1,0 +1,2 @@
+n_serial.c:8:13:serialNoteTransaction	56	static
+n_serial.c:111:6:serialNoteReset	24	static

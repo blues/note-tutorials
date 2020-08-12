@@ -1,0 +1,11 @@
+n_request.c:14:11:errDoc	24	static
+n_request.c:27:6:NoteSuspendTransactionDebug	4	static
+n_request.c:30:6:NoteResumeTransactionDebug	4	static
+n_request.c:36:4:NoteNewRequest	24	static
+n_request.c:46:6:NoteRequest	24	static
+n_request.c:65:4:NoteRequestResponse	24	static
+n_request.c:82:4:NoteTransaction	48	static
+n_request.c:149:6:NoteResetRequired	4	static
+n_request.c:154:6:NoteReset	8	static
+n_request.c:162:6:NoteErrorContains	16	static
+n_request.c:167:6:NoteErrorClean	32	static
