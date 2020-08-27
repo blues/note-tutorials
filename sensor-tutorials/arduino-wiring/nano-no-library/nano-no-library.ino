@@ -49,9 +49,8 @@ void loop() {
   // Sample the BME680 sensor
   if (!bmeSensor.performReading()) {
     serialDebug.println("Failed to obtain a reading...");
-    return;
   }
-  
+
   // Print readings to the console
   serialDebug.print("Temperature = ");
   serialDebug.print(bmeSensor.temperature);
