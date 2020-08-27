@@ -49,6 +49,8 @@ void loop() {
   // Sample the BME680 sensor
   if (!bmeSensor.performReading()) {
     serialDebug.println("Failed to obtain a reading...");
+    delay(3000);
+    return;
   }
 
   // Print readings to the console
