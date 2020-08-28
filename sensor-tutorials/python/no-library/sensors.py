@@ -5,7 +5,7 @@ import adafruit_bme680
 import json
 from periphery import Serial
 
-productUID = "<com.your-company.your-product>"
+productUID = "com.[your-company].[your-product]"
 
 serial = Serial('/dev/ttyS0', 9600)
 serial.write(b'\n')
