@@ -1,12 +1,11 @@
-import json
-from periphery import Serial
-
 import board
 import busio
 import time
 import adafruit_bme680
+import json
+from periphery import Serial
 
-productUID  = "com.your-company.your-project"
+productUID = "com.[your-company].[your-product]"
 
 serial = Serial('/dev/ttyS0', 9600)
 serial.write(b'\n')
@@ -19,9 +18,6 @@ serial.write(b'\n')
 
 print(json.dumps(req))
 
-i2c = busio.I2C(board.SCL, board.SDA)
-sensor = adafruit_bme680.Adafruit_BME680_I2C(i2c)
-
 data = serial.read(32, 0.5)
 if data is not None:
     data_string = ''.join([chr(b) for b in data])
@@ -29,6 +25,9 @@ if data is not None:
     print("Notecard configured...")
 else:
     print('Notecard not connected...')
+
+i2c = busio.I2C(board.SCL, board.SDA)
+sensor = adafruit_bme680.Adafruit_BME680_I2C(i2c)
 
 while True:
     temp = sensor.temperature
@@ -46,7 +45,7 @@ while True:
 
     data = serial.read(255, 0.5)
     if data is not None:
-        data_string = ''.join([chr(b) for b in data])
-        print(data_string, end="")
+      data_string = ''.join([chr(b) for b in data])
+      print(data_string, end="")
 
     time.sleep(15)
