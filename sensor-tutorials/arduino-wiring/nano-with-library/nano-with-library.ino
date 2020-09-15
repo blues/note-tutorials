@@ -5,6 +5,7 @@
 #define serialNotecard Serial1
 
 #define productUID "com.your-company.your-project"
+Notecard notecard;
 
 #define IIC_ADDR  uint8_t(0x76)
 Seeed_BME680 bmeSensor(IIC_ADDR);
@@ -12,14 +13,14 @@ Seeed_BME680 bmeSensor(IIC_ADDR);
 void setup() {
   delay(2500);
   serialDebug.begin(115200);
-  NoteSetDebugOutputStream(serialDebug);
+  notecard.setDebugOutputStream(serialDebug);
 
-  NoteInitSerial(serialNotecard, 9600);
+  notecard.begin(serialNotecard, 9600);
 
-  J *req = NoteNewRequest("hub.set");
+  J *req = notecard.newRequest("hub.set");
   JAddStringToObject(req, "product", productUID);
   JAddStringToObject(req, "mode", "continuous");
-  NoteRequest(req);
+  notecard.sendRequest(req);
 
   if (!bmeSensor.init()) {
     serialDebug.println("Could not find a valid BME680 sensor...");
@@ -43,19 +44,19 @@ void loop() {
   serialDebug.print(bmeSensor.sensor_result_value.humidity);
   serialDebug.println(" %");
 
-  J *req = NoteNewRequest("note.add");
+  J *req = notecard.newRequest("note.add");
   if (req != NULL) {
     JAddStringToObject(req, "file", "sensors.qo");
     JAddBoolToObject(req, "start", true);
-    
+
     J *body = JCreateObject();
     if (body != NULL) {
       JAddNumberToObject(body, "temp", bmeSensor.sensor_result_value.temperature);
       JAddNumberToObject(body, "humidity", bmeSensor.sensor_result_value.humidity);
       JAddItemToObject(req, "body", body);
     }
-    
-    NoteRequest(req);
+
+    notecard.sendRequest(req);
   }
 
   delay(60000);
