@@ -14,7 +14,8 @@ The links below direct to the complete project source for each language and boar
     - [With Notecard Library](/sensor-tutorials/arduino-wiring/nano-with-library/nano-with-library.ino)
     - [Without Notecard Library](/sensor-tutorials/arduino-wiring/nano-no-library/nano-no-library.ino)
 - Python
-  - [With Notecard Library](/sensor-tutorials/python/with-library/sensors.py)
+  - [Serial With Notecard Library](/sensor-tutorials/python/serial-with-library/sensors.py)
+  - [I2C With Notecard Library](/sensor-tutorials/python/i2c-with-library/sensors.py)
   - [Without Notecard Library](/sensor-tutorials/python/no-library/sensors.py)
 - CircuitPython
   - [With Notecard Library](/sensor-tutorials/circuitpython/with-notecard-library/code.py)
