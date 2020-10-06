@@ -16,7 +16,7 @@ productUID = "com.[your-company].[your-product]"
 port = I2C("/dev/i2c-1")
 card = notecard.OpenI2C(port, 0, 0)
 
-req = {"req": "service.set"}
+req = {"req": "hub.set"}
 req["product"] = productUID
 req["mode"] = "continuous"
 
