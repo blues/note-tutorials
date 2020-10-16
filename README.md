@@ -23,6 +23,11 @@ The links below direct to the complete project source for each language and boar
 - C/C++
   - [STM32](/sensor-tutorials/stm32-c)
 
+## GPS Asset Tracker Guide
+
+- [Standalone Tracker Configuration Script](gps-tutorials/configure-standalone-tracker.json)
+- [Host-Controlled Tracker (Arduino)](gps-tutorials/esp32tracker/esp32tracker.ino)
+
 ## Contributing
 
 We love issues, fixes, and pull requests from everyone. By participating in this
@@ -33,7 +38,7 @@ For details on contributions we accept and the process for contributing, see our
 
 ## More Information
 
-For additional Notecard SDKs and Libraries, see:
+For Notecard SDKs and Libraries, see:
 
 * [note-c](note-c) for Standard C support
 * [note-go](note-go) for Go
