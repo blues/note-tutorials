@@ -1,0 +1,4 @@
+{"req":"card.restore","delete":true}
+{"req":"hub.set","product":"com.brandon.blues.standalone-tracker","outbound":60,"inbound":120,"mode":"periodic"}
+{"req":"card.location.mode","mode":"periodic","seconds":3600}
+{"req":"card.location.track","start":true,"heartbeat":true,"hours":4}
