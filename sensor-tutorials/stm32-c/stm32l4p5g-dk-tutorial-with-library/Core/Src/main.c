@@ -256,7 +256,7 @@ int main(void)
 	  J *req = NoteNewRequest("note.add");
 	  if (req != NULL) {
 	    JAddStringToObject(req, "file", "sensors.qo");
-	    JAddBoolToObject(req, "start", true);
+	    JAddBoolToObject(req, "sync", true);
 	    J *body = JCreateObject();
 	    if (body != NULL) {
 	      JAddNumberToObject(body, "temp", data.temperature / 100.0);

@@ -1073,7 +1073,7 @@ bool NoteAdd(const char *target, J *body, bool urgent) {
 
     // Initiate sync NOW if it's urgent
     if (urgent)
-        JAddBoolToObject(req, "start", true);
+        JAddBoolToObject(req, "sync", true);
 
     // Perform the transaction
     return NoteRequest(req);
