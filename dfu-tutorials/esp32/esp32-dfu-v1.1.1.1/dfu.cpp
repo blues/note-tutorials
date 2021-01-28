@@ -144,7 +144,7 @@ void dfuPoll(bool force) {
 
     // Loop over received chunks
     int offset = 0;
-    int chunklen = 8192;
+    int chunklen = 4096;
     int left = imageLength;
     NoteMD5Context md5Context;
     NoteMD5Init(&md5Context);
