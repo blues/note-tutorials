@@ -40,9 +40,9 @@ For details on contributions we accept and the process for contributing, see our
 
 For Notecard SDKs and Libraries, see:
 
-* [note-c](note-c) for Standard C support
-* [note-go](note-go) for Go
-* [note-python](note-python) for Python
+* [note-c][note-c] for Standard C support
+* [note-go][note-go] for Go
+* [note-python][note-python] for Python
 
 ## To learn more about Blues Wireless, the Notecard and Notehub, see:
 
