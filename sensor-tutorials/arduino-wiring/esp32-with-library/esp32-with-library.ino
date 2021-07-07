@@ -48,7 +48,7 @@ void setup() {
   if (!bmeSensor.begin()) {
     serialDebug.println("Could not find a valid BME680 sensor...");
   } else {
-  //  serialDebug.println("BME680 Connected...");
+    serialDebug.println("BME680 Connected...");
   }
 
   bmeSensor.setTemperatureOversampling(BME680_OS_8X);
@@ -62,13 +62,13 @@ void loop() {
     return;
   }
 
-  /*serialDebug.print("Temperature = ");
+  serialDebug.print("Temperature = ");
   serialDebug.print(bmeSensor.temperature);
   serialDebug.println(" *C");
 
   serialDebug.print("Humidity = ");
   serialDebug.print(bmeSensor.humidity);
-  serialDebug.println(" %");*/
+  serialDebug.println(" %");
 
   J *req = notecard.newRequest("note.add");
   if (req != NULL) {
@@ -82,7 +82,7 @@ void loop() {
       JAddItemToObject(req, "body", body);
     }
 
-    //notecard.sendRequest(req);
+    notecard.sendRequest(req);
   }
 
   delay(15000);
