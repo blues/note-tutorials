@@ -1,0 +1,34 @@
+name: Note Arduino CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  validate_examples: # job id
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        example-sketch:
+          - dfu-tutorials/esp32/esp32-dfu-v1.0.0.0
+          - dfu-tutorials/esp32/esp32-dfu-v1.1.0.0
+          - dfu-tutorials/esp32/esp32-dfu-v1.1.1.1
+        fully-qualified-board-name:
+          - esp32:esp32:featheresp32
+    steps:
+      - name: Checkout Code
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Compile Examples
+        id: compile_examples
+        uses: ./.github/actions/compile-examples
+        with:
+          libraries: 'Blues Wireless Notecard'
+          sketch: ${{ matrix.example-sketch }}
+          fully-qualified-board-name: ${{ matrix.fully-qualified-board-name }}
+          log_level: warn

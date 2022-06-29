@@ -1,0 +1,14 @@
+name: 'Compile Arduino Sketch'
+author: 'Zachary J. Fields'
+description: 'Compiles an arduino sketch for a given board'
+runs:
+  using: 'docker'
+  image: './Dockerfile'
+  entrypoint: 'bash'
+  args:
+    - -x
+    - ".github/actions/compile-examples/compile.sh"
+    - ${{ inputs.sketch }}
+    - ${{ inputs.fully-qualified-board-name }}
+    - ${{ inputs.log_level }}
+    - ${{ inputs.libraries }}
