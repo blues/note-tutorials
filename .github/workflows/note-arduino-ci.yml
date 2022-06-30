@@ -31,7 +31,7 @@ jobs:
             libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"
           - sketch: gps-tutorials/esp32tracker
             fully-qualified-board-name: esp32:esp32:featheresp32
-            libraries: "Blues Wireless Notecard"            
+            libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"            
           - sketch: sensor-tutorials/arduino-wiring/esp32-no-library
             fully-qualified-board-name: esp32:esp32:featheresp32
             libraries: "Adafruit BME680 Library"
