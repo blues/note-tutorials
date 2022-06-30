@@ -1,12 +1,25 @@
 name: 'Compile Arduino Sketch'
 author: 'Zachary J. Fields'
 description: 'Compiles an arduino sketch for a given board'
+inputs:
+  libraries:
+    description: "Comma separated list of libraries to fetch"
+    required: false
+  sketch:
+    description: "Directory relative to the root of the sketch to compile"    
+    required: true
+  fully-qualified-board-name: 
+    description: "The fqbn of the board to compile the sketch for"
+    required: true
+  log_level:
+    description: "corresponds to the --log-level option in arduino-cli. Messages with this level and above will be logged. Valid levels are: trace, debug, info, warn, error, fatal, panic"
+    required: false
+    default: "warn"
 runs:
   using: 'docker'
   image: './Dockerfile'
   entrypoint: 'bash'
   args:
-    - -x
     - ".github/actions/compile-examples/compile.sh"
     - ${{ inputs.sketch }}
     - ${{ inputs.fully-qualified-board-name }}

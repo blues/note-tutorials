@@ -5,7 +5,11 @@
 #define serialDebug Serial
 #define serialNotecard Serial1
 
-#define productUID "com.veritas.delivery-fleet.tracker"
+#ifndef PRODUCT_UID
+#define PRODUCT_UID ""
+#endif
+
+#define productUID PRODUCT_UID
 
 #define IIC_ADDR  uint8_t(0x76)
 Seeed_BME680 bmeSensor(IIC_ADDR);
@@ -33,8 +37,8 @@ void setup()
   notecard.begin();
 
   // Query ProductUID. If the ProductUID does not match, perform a card.restore
-  if (productUIDMatch()) {
-    serialDebug.println("ProductUID matches, skipping reset...");
+  if (!productUID[0] || productUIDMatch()) {
+    serialDebug.println("ProductUID matches or is not set, skipping reset...");
     notecardProductSet = true;
   } else {
     serialDebug.println("ProductUID does not match, performing a reset...");
