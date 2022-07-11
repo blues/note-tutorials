@@ -1,5 +1,5 @@
 name: 'Compile Arduino Sketch'
-author: 'Zachary J. Fields'
+author: 'Zachary J. Fields and Matthew McGowan'
 description: 'Compiles an arduino sketch for a given board'
 inputs:
   libraries:

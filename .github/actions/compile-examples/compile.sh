@@ -7,15 +7,15 @@ LIBS="$4"
 HOME=/home/blues
 IFS=','
 read -ra libraries <<< "$LIBS"
-for lib in "${libraries[@]}"; do 
+for lib in "${libraries[@]}"; do
       lib=$( echo $lib | xargs )          # remove leading/trailing whitespace
       args=""
       export ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=false
-      if [[ $lib == *"/"* ]]; then
+      if [[ $lib == *"/"* ]]; then       # presence of forward-slash indicates URL
             args=--git-url
             export ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true
       fi
-      arduino-cli lib install $args $lib; 
+      arduino-cli lib install $args $lib;
 done
 
 

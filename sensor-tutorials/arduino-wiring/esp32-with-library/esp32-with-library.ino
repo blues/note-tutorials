@@ -20,7 +20,11 @@ Adafruit_BME680 bmeSensor;
 //#define serialNotecard Serial1
 #define serialDebug Serial
 
-#define productUID "com.your-company.your-name:your_project"
+#ifndef PRODUCT_UID
+#define PRODUCT_UID ""
+#endif
+
+#define productUID PRODUCT_UID
 Notecard notecard;
 
 // One-time Arduino initialization
@@ -41,7 +45,9 @@ void setup() {
 #endif
 
   J *req = notecard.newRequest("hub.set");
-  JAddStringToObject(req, "product", productUID);
+  if (productUID[0]) {
+    JAddStringToObject(req, "product", productUID);
+  }
   JAddStringToObject(req, "mode", "continuous");
   notecard.sendRequest(req);
 

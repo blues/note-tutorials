@@ -103,6 +103,7 @@ RUN ["dash", "-c", "\
  && arduino-cli core install SparkFun:apollo3 \
  && arduino-cli core install STMicroelectronics:stm32 \
  && arduino-cli lib install \"Adafruit BME680 Library\" \
+ && arduino-cli lib install \"Blues Wireless Notecard\" \
 "]
 
 # Set Execution Environment

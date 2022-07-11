@@ -14,7 +14,11 @@
 #define LOOP_DELAY_MS (1000/LOOP_HZ)
 
 #define serialDebug Serial
-#define productUID "com.your-company.you:your-project"
+
+#ifndef PRODUCT_UID
+#define PRODUCT_UID ""
+#endif
+#define productUID PRODUCT_UID
 
 Notecard notecard;
 
@@ -48,7 +52,9 @@ void setup() {
 
   // Configure Notecard
   if (J *req = notecard.newRequest("hub.set")) {
-    JAddStringToObject(req, "product", productUID);
+    if (productUID[0]) {
+      JAddStringToObject(req, "product", productUID);
+    }
     JAddStringToObject(req, "mode", "continuous");
     JAddBoolToObject(req, "sync", true);
     if (!notecard.sendRequest(req)) {
