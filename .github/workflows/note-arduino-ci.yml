@@ -65,18 +65,19 @@ jobs:
           fully-qualified-board-name: ${{ matrix.fully-qualified-board-name }}
           log_level: warn
 
-  # stm32_ci_job:
-  #   runs-on: ubuntu-latest
-  #   name: CI job for stm32
-  #   matrix:
-  #     include:
-  #       - project: sensor-tutorials/stm32-c/stm32-with-library
-  #   steps:
-  #   - name: checkout code
-  #     uses: actions/checkout@v2
-  #   - name: CI action step for stm32
-  #     id: stm32ci
-  #     env:
-  #       GITHUB_WORKSAPCE=${{env.GITHUB_WORKSPACE}}/${{ matrix.project }}
-  #     uses: milesfrain/stm32-action@v0.5
+  stm32_ci:
+    runs-on: ubuntu-latest
+    name: CI job for stm32
+    strategy:
+      matrix:
+        include:
+          - project: sensor-tutorials/stm32-c/stm32-with-library
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v2
+    - name: CI action step for stm32
+      id: stm32ci
+      uses: ./.github/actions/compile-stm32
+      with:
+        stm32-project: ${{ matrix.project }}
 

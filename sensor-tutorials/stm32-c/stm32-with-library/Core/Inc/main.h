@@ -47,7 +47,8 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+#define LD3_Pin GPIO_PIN_3
+#define LD3_GPIO_Port GPIOB
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
