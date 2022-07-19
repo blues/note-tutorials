@@ -48,7 +48,10 @@
 Seeed_BME680 bmeSensor(IIC_ADDR);
 
 // This is the unique Product Identifier for your device.
-#define myProductID "org.coca-cola.soda.vending-machine.v2"
+#ifndef PRODUCT_UID
+#define PRODUCT_UID ""
+#endif
+#define myProductID PRODUCT_UID
 Notecard notecard;
 
 // Button handling
@@ -95,7 +98,9 @@ void setup() {
   // Configure for sync
   J *req = notecard.newRequest("hub.set");
   if (req != NULL) {
-    JAddStringToObject(req, "product", myProductID);
+    if (myProductID[0]) {
+      JAddStringToObject(req, "product", myProductID);
+    }
     JAddStringToObject(req, "mode", "periodic");
     JAddNumberToObject(req, "outbound", 2);
     JAddNumberToObject(req, "inbound", 60);

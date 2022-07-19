@@ -1,0 +1,11 @@
+name: 'Compile STM32 project'
+description: 'Compiles an STM32 project using stm32cubeide'
+inputs:
+  stm32-project:
+    description: 'the path of te project to build'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.stm32-project }}

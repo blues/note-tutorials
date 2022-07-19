@@ -1,0 +1,83 @@
+name: Note Tutorials CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  validate_tutorials: # job id
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      max-parallel: 1
+      matrix:
+        include:
+          - sketch: notecard-guides/arduino-wiring/FileAttentionInterrupt/FileAttentionInterrupt.ino
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Blues Wireless Notecard"
+          - sketch: notecard-guides/arduino-wiring/SecondsAttentionInterrupt/SecondsAttentionInterrupt.ino
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Blues Wireless Notecard"
+          - sketch: notecard-guides/arduino-wiring/Twilio/Twilio.ino
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Blues Wireless Notecard"
+
+          - sketch: sensor-tutorials/arduino-wiring/nano-no-library
+            fully-qualified-board-name: arduino:mbed_nano:nano33ble
+            libraries: "https://github.com/Seeed-Studio/Seeed_BME680"
+          - sketch: sensor-tutorials/arduino-wiring/nano-with-library
+            fully-qualified-board-name: arduino:mbed_nano:nano33ble
+            libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"
+
+          - sketch: dfu-tutorials/esp32/esp32-dfu-v1.0.0.0
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"
+          - sketch: dfu-tutorials/esp32/esp32-dfu-v1.1.0.0
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"
+          - sketch: dfu-tutorials/esp32/esp32-dfu-v1.1.1.1
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"
+          - sketch: gps-tutorials/esp32tracker
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"
+          - sketch: sensor-tutorials/arduino-wiring/esp32-no-library
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Adafruit BME680 Library"
+          - sketch: sensor-tutorials/arduino-wiring/esp32-with-library
+            fully-qualified-board-name: esp32:esp32:featheresp32
+            libraries: "Blues Wireless Notecard, Adafruit BME680 Library"
+
+    steps:
+      - name: Checkout Code
+        id: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Compile Examples
+        id: compile_examples
+        uses: ./.github/actions/compile-examples
+        with:
+          libraries: ${{ matrix.libraries }}
+          sketch: ${{ matrix.sketch }}
+          fully-qualified-board-name: ${{ matrix.fully-qualified-board-name }}
+          log_level: warn
+
+  stm32_ci:
+    runs-on: ubuntu-latest
+    name: CI job for stm32
+    strategy:
+      matrix:
+        include:
+          - project: sensor-tutorials/stm32-c/stm32-with-library
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v2
+    - name: CI action step for stm32
+      id: stm32ci
+      uses: ./.github/actions/compile-stm32
+      with:
+        stm32-project: ${{ matrix.project }}
+

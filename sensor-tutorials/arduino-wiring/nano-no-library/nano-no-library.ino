@@ -1,6 +1,5 @@
-#include <bme680.h>
+
 #include <Adafruit_BME680.h>
-#include <bme680_defs.h>
 
 #define serialDebug Serial
 #define serialNotecard Serial1

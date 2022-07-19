@@ -1,4 +1,0 @@
-n_b64.c:110:5:JB64DecodeLen	24	static
-n_b64.c:125:5:JB64Decode	32	static
-n_b64.c:173:5:JB64EncodeLen	16	static
-n_b64.c:178:5:JB64Encode	32	static
