@@ -4,7 +4,7 @@ Public repo for complete, runnable sources of wireless.dev tutorials, sample pro
 
 ## Sensor Tutorials
 
-The links below direct to the complete project source for each language and board specific incarnation of the wireless.dev [Sensor Tutorial](https://guides/sensor-tutorial).
+The links below direct to the complete project source for each language and board specific incarnation of the wireless.dev [Sensor Tutorial](https://dev.blues.io/guides-and-tutorials/collecting-sensor-data/).
 
 - Arduino Wiring
   - ESP32/Feather
