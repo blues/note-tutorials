@@ -39,7 +39,13 @@
 /* USER CODE BEGIN PTD */
 #define DELAY_PERIOD_MS (15*1000) // 15 seconds
 #define NOTE_I2C_BUFFER_SIZE 0xFF
-#define NOTE_PRODUCT_UID "com.zakoverflow.test"
+
+#ifndef PRODUCT_UID
+#pragma info "PRODUCT_UID is not defined in this example. Please ensure your Notecard has a product identifier set before running this example or define it in code here. Please see https://bit.ly/product-uid for more details."
+#define PRODUCT_UID ""      /*/ com.mycompany.myname:project */
+#endif
+
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -226,7 +232,9 @@ int main(void)
 
   // Configure device with ProductUID
   J *req = NoteNewRequest("hub.set");
-  JAddStringToObject(req, "product", NOTE_PRODUCT_UID);
+  if (PRODUCT_UID[0]) {
+    JAddStringToObject(req, "product", PRODUCT_UID);
+  }
   JAddStringToObject(req, "mode", "continuous");
   NoteRequest(req);
   /* USER CODE END 2 */

@@ -72,6 +72,7 @@ jobs:
       matrix:
         include:
           - project: sensor-tutorials/stm32-c/stm32-with-library
+          - project: sensor-tutorials/stm32-c/stm32l4p5g-dk-tutorial-with-library
     steps:
     - name: checkout code
       uses: actions/checkout@v2
