@@ -1,3 +1,0 @@
-n_i2c.c:24:13:_DelayIO	8	static
-n_i2c.c:39:13:i2cNoteTransaction	80	static
-n_i2c.c:186:6:i2cNoteReset	160	static
