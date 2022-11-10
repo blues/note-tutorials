@@ -38,14 +38,14 @@ while True:
     req = {"req": "note.add"}
     req["file"] = "sensors.qo"
     req["start"] = True
-    req["body"] = { "temp": temp, "humidity": humidity }
+    req["body"] = {"temp": temp, "humidity": humidity}
 
     serial.write(bytearray(json.dumps(req), 'utf8'))
     serial.write(b'\n')
 
     data = serial.read(255, 0.5)
     if data is not None:
-      data_string = ''.join([chr(b) for b in data])
-      print(data_string, end="")
+        data_string = ''.join([chr(b) for b in data])
+        print(data_string, end="")
 
     time.sleep(15)

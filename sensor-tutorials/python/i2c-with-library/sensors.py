@@ -37,7 +37,7 @@ while True:
     req = {"req": "note.add"}
     req["file"] = "sensors.qo"
     req["start"] = True
-    req["body"] = { "temp": temp, "humidity": humidity}
+    req["body"] = {"temp": temp, "humidity": humidity}
     rsp = card.Transaction(req)
 
     print(rsp)
