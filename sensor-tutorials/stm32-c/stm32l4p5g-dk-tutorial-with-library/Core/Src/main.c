@@ -42,7 +42,8 @@
 
 #ifndef PRODUCT_UID
 #pragma info "PRODUCT_UID is not defined in this example. Please ensure your Notecard has a product identifier set before running this example or define it in code here. Please see https://bit.ly/product-uid for more details."
-#define PRODUCT_UID ""      /*/ com.mycompany.myname:project */
+#define PRODUCT_UID ""      /* com.mycompany.myname:project */
+
 #endif
 
 
