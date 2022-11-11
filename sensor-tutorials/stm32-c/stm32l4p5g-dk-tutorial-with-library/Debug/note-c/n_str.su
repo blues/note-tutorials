@@ -1,2 +1,0 @@
-string.h:116:8:strlcpy	40	static
-string.h:115:8:strlcat	40	static
