@@ -8,12 +8,18 @@
 // already-verified firmware from the Notecard's storage in a fully-offline manner, which is why
 // we use the more generic DFU (Device Firmware Update) term of art.
 
-#include "main.h"
 #include <Arduino.h>
 #include <Notecard.h>
 #include "Updater.h"
+#include "dfu.h"
 
 
+// Constants
+#define secs1Min  (60)
+#define secs1Hour (60*secs1Min)
+#define ms1Sec    (1000)
+#define ms1Min    (1000*secs1Min)
+#define ms1Hour   (1000*secs1Hour)
 
 void dfuSetup() {
 
@@ -23,13 +29,13 @@ void dfuSetup() {
       notecard.sendRequest(req);
   }
 
-
   Update.onError([](uint8_t error) {
     notecard.logDebug(Update.getErrorString().c_str());
+    notecard.logDebug("\n");
   });
 
   Update.onProgress([](size_t complete, size_t total) {
-    notecard.logDebugf("DFU progress: %d/%d (%d%%)", complete, total, (complete/total)*100);
+    notecard.logDebugf("DFU progress: %d/%d (%d%%)\n", complete, total, (complete/total)*100);
   });
 }
 

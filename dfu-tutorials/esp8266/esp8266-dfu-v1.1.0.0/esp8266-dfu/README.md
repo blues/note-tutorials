@@ -1,3 +1,17 @@
+simplify ino file - remove boilerplate, implementation details to the shared DFU code
+    - [x] firmware version functions, DFU initialization moved into library
+    - use Button library to remove button handling boilerplate
+memory allocation safety for J* and requests
+JSON builder/fluent API
+trace logs for debugging (compile-time and runtime)
+timer/tasks
+configurable timeouts in constructor
+reusable with a clear interface (remove main.h -> dfu.h) C++
+an easier way to create the metadata using constexpr in C - move version info to version.h for easier version management
+more re-entrant rather than tight loops. should work with the task framework or use local state.
+
+
+
 
 ESP8266 board
 https://randomnerdtutorials.com/how-to-install-esp8266-board-arduino-ide/#:~:text=Install%20ESP8266%20Add%2Don%20in%20Arduino%20IDE&text=Open%20the%20Boards%20Manager.,installed%20after%20a%20few%20seconds.
