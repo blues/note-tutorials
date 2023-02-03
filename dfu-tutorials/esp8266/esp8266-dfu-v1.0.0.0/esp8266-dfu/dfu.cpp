@@ -104,7 +104,7 @@ void dfuPoll(bool force)
   // just an infinite loop is simply defensive programming.  If for some odd reason
   // we don't enter DFU mode, we'll eventually come back here on the next DFU poll.
   bool inDFUMode = false;
-  int beganDFUModeCheck = millis();
+  unsigned beganDFUModeCheck = millis();
   while (!inDFUMode && millis() < beganDFUModeCheck + (2 * ms1Min))
   {
     if (J *rsp = notecard.requestAndResponse(notecard.newRequest("dfu.get")))

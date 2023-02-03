@@ -154,12 +154,14 @@ void loop() {
         temperature = JGetNumber(rsp, "value");
         notecard.deleteResponse(rsp);
     }
+#if PRODUCT_MINOR >= 1
     double voltage = 0;
     rsp = notecard.requestAndResponse(notecard.newRequest("card.voltage"));
     if (rsp != NULL) {
         voltage = JGetNumber(rsp, "value");
         notecard.deleteResponse(rsp);
     }
+#endif
     // Enqueue the measurement to the Notecard for transmission to the Notehub.	 These measurements
     // will be staged in the Notecard's flash memory until it's time to transmit them to the service.
     J *req = notecard.newRequest("note.add");
