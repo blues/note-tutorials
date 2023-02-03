@@ -58,6 +58,22 @@ inline scoped_response_t scoped_response(J* rsp) {
     return scoped_response_t{rsp, JDelete};
 }
 
+struct version {
+    int major;
+    int minor;
+
+    constexpr version(int major, int minor) : major(major), minor(minor) {}
+};
+
+constexpr bool check_version(const version& actual, const version& required) {
+    return actual.major > required.major || (actual.major==required.major && actual.minor >= required.minor);
+};
+
+
+inline int JB64Decode(unsigned char *bufplain, const char *bufcoded) {
+    return JB64Decode((char*)bufplain, bufcoded);
+}
+
 #if 0 // WiP trials
 class JSONWrapper {
     J* j;
