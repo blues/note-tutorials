@@ -12,6 +12,9 @@
 class ArduinoESP8266DFUUpdater {
 public:
     bool setup() {
+
+        notecard.logDebugf("dfu: free space %d bytes\n", ESP.getFreeSketchSpace());
+
         // install callbacks to the updater
         Update.onError([](uint8_t error) {
             notecard.logDebug(Update.getErrorString().c_str());
