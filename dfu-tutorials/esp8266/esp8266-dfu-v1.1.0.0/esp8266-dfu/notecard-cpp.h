@@ -11,7 +11,20 @@
 
 extern Notecard notecard;
 
-typedef std::unique_ptr<uint8_t[], void(*)(void*)> scoped_malloc_t;
+
+template <typename T, typename D=std::default_delete<T>>
+class unique_c_ptr : public std::unique_ptr<T, D> {
+    using Pointer = T*;
+    using super = std::unique_ptr<T, D>;
+public:
+    unique_c_ptr(T* t, D d) noexcept : super(t, d) {}
+
+    operator Pointer() const {
+        return this->get();
+    }
+};
+
+typedef unique_c_ptr<uint8_t, void(*)(void*)> scoped_malloc_t;
 
 inline scoped_malloc_t scoped_malloc() {
     return scoped_malloc_t{nullptr, free};
@@ -31,7 +44,7 @@ inline void scoped_free(scoped_malloc_t& scope) {
     scope.release();
 }
 
-typedef std::unique_ptr<J, void(*)(J*)> scoped_response_t;
+typedef unique_c_ptr<J, void(*)(J*)> scoped_response_t;
 
 /**
  * @brief Create a handle for a response so that it is freed when it goes out of scope.
