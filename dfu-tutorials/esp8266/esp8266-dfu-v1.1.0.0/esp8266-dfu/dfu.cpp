@@ -199,7 +199,6 @@ public:
     checkDFUAvailableInterval = config.checkDFUAvailableInterval.count();
     requestAttempts = config.requestAttempts;
 
-
     bool ok = updater.setup();
     if (!ok) {
       transitionTo(State::UNAVAILABLE);

@@ -83,6 +83,7 @@ void setup() {
     // Notify the Notehub of our current firmware version
 #if DFU_ENABLED
     DFUConfig config = {
+        .requestInterval = 1234ms,
         .checkDFUAvailableInterval = 24h
     };
     dfuSetup(config);

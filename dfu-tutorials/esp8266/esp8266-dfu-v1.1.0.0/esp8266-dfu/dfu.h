@@ -24,9 +24,9 @@ struct DFUConfig {
      * this number of attempts, the update process is errored out.
      */
     static const uint8_t DEFAULT_REQUEST_ATTEMPTS = 5;
-    constexpr static std::chrono::microseconds DEFAULT_REQUEST_INTERVAL = 250ms;
-    constexpr static std::chrono::microseconds DEFAULT_CHECK_DFU_AVAILABLE_INTERVAL = 10min;
-    constexpr static std::chrono::microseconds DEFAULT_AIT_FOR_DFU_TIMEOUT = 2min;
+    constexpr static std::chrono::milliseconds DEFAULT_REQUEST_INTERVAL = 250ms;
+    constexpr static std::chrono::milliseconds DEFAULT_CHECK_DFU_AVAILABLE_INTERVAL = 10min;
+    constexpr static std::chrono::milliseconds DEFAULT_AIT_FOR_DFU_TIMEOUT = 2min;
 
 
     /*
@@ -37,11 +37,11 @@ struct DFUConfig {
     /**
      * @brief The duration between polling 
      */
-    std::chrono::microseconds requestInterval = DEFAULT_REQUEST_INTERVAL;
+    std::chrono::milliseconds requestInterval = DEFAULT_REQUEST_INTERVAL;
 
-    std::chrono::microseconds checkDFUAvailableInterval = DEFAULT_CHECK_DFU_AVAILABLE_INTERVAL;
+    std::chrono::milliseconds checkDFUAvailableInterval = DEFAULT_CHECK_DFU_AVAILABLE_INTERVAL;
 
-    std::chrono::microseconds waitForDFUTimeout = DEFAULT_AIT_FOR_DFU_TIMEOUT;
+    std::chrono::milliseconds waitForDFUTimeout = DEFAULT_AIT_FOR_DFU_TIMEOUT;
 
 };
 
