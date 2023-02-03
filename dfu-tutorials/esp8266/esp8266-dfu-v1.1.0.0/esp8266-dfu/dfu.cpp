@@ -15,28 +15,12 @@
 #include "TicksTimer.h"
 #include "dfu-updater.h"
 
-// Constants
-#define secs1Min (60)
-#define secs1Hour (60 * secs1Min)
-#define ms1Sec (1000)
-#define ms1Min (1000 * secs1Min)
-#define ms1Hour (1000 * secs1Hour)
-
 /**
  * @brief Implements host firmware updates.
  *
  */
 class DFU
 {
-
-  /**
-   * @brief The number of attempts made to send a request to the Notecard. When the request cannot be sent within
-   * this number of attempts, the update process is errored out.
-   */
-  const unsigned REQUEST_ATTEMPTS = 5;
-  const unsigned REQUEST_INTERVAL = 250; // ms
-  const unsigned CHECK_DFU_AVAILABLE_INTERVAL = ms1Sec*20;
-  const unsigned WAIT_FOR_DFU_TIMEOUT = 1 * ms1Min;
 
   enum class State
   {
@@ -117,12 +101,17 @@ class DFU
    * @brief The current state the DFU process is in.
    */
   State state = State::INITIAL;
+
+  /**
+   * @brief Set to true when a new state transition occurs. This is used to skip the delay interval on first
+   * transitioning to the state.
+   */
   bool newState;
 
   /**
    * @brief How many retries. This is set when transitioning to the state.
    */
-  unsigned stateRetries = 0;
+  unsigned stateRetries;
 
   /**
    * @brief How many retries remain for the current state. When 0 and `stateRetries` is non-zero
@@ -176,7 +165,7 @@ class DFU
    */
   NoteMD5Context md5Context;
 
-  /** The current chunk retrieved from the Notecard. */
+  /** The current chunk retrieved from the Notecard. Allocated in RETRIEVE_CHUNK and released in STORE_CHUNK */
   scoped_malloc_t currentChunk = scoped_malloc();
 
   /** The length of the chunk in `currentChunk` */
@@ -197,10 +186,20 @@ class DFU
    */
   DFUUpdater updater;
 
+  unsigned waitForDFUModeTimeout;
+  unsigned requestInterval;
+  unsigned checkDFUAvailableInterval;
+  unsigned requestAttempts;
 public:
   DFU() {}
 
-  bool setup() {
+  bool setup(const DFUConfig& config) {
+    waitForDFUModeTimeout = config.waitForDFUTimeout.count();
+    requestInterval = config.requestInterval.count();
+    checkDFUAvailableInterval = config.checkDFUAvailableInterval.count();
+    requestAttempts = config.requestAttempts;
+
+
     bool ok = updater.setup();
     if (!ok) {
       transitionTo(State::UNAVAILABLE);
@@ -293,15 +292,15 @@ private:
     {
     case State::UNAVAILABLE:
       // stay in this state, with a long timeout between each poll
-      _transitionTo(state, 0, ms1Hour*24, 0);
+      _transitionTo(state, 0, 24*60*60*1000 /* 1 day */, 0);
       break;
 
     case State::CHECK_DFU_AVAILABLE:
-      _transitionTo(state, 0, CHECK_DFU_AVAILABLE_INTERVAL, 0);
+      _transitionTo(state, 0, checkDFUAvailableInterval, 0);
       break;
 
     case State::CHECK_DFU_MODE:
-      _transitionTo(state, 0, 2500, 2 * ms1Min);
+      _transitionTo(state, 0, 2500, waitForDFUModeTimeout);
       break;
 
     // the remaining states attempt a retry
@@ -316,7 +315,7 @@ private:
     case State::LEAVE_DFU_MODE:
     case State::DELETE_DFU_IMAGE:
     case State::EXECUTE_IMAGE:
-      _transitionTo(state, REQUEST_ATTEMPTS, REQUEST_INTERVAL, 0);
+      _transitionTo(state, requestAttempts, requestInterval, 0);
       break;
     }
   }
@@ -772,9 +771,9 @@ DFU &dfu()
   return dfu;
 }
 
-bool _dfuSetup()
+bool dfuSetup(const DFUConfig& config)
 {
-  return dfu().setup();
+  return dfu().setup(config);
 }
 
 uint32_t dfuPoll(bool force)

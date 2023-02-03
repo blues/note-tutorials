@@ -10,17 +10,49 @@
 
 #include "dfu-version.h"
 #include "dfu-updater.h"
+#include <chrono>
+
+using namespace std::literals::chrono_literals;
 
 extern Notecard notecard;
 
+struct DFUConfig {
+ 
+
+    /**
+     * @brief The number of attempts made to send a request to the Notecard. When the request cannot be sent within
+     * this number of attempts, the update process is errored out.
+     */
+    static const uint8_t DEFAULT_REQUEST_ATTEMPTS = 5;
+    constexpr static std::chrono::microseconds DEFAULT_REQUEST_INTERVAL = 250ms;
+    constexpr static std::chrono::microseconds DEFAULT_CHECK_DFU_AVAILABLE_INTERVAL = 10min;
+    constexpr static std::chrono::microseconds DEFAULT_AIT_FOR_DFU_TIMEOUT = 2min;
+
+
+    /*
+     * The number of times to retry a request if it fails.
+    */
+    uint8_t requestAttempts = DEFAULT_REQUEST_ATTEMPTS;
+
+    /**
+     * @brief The duration between polling 
+     */
+    std::chrono::microseconds requestInterval = DEFAULT_REQUEST_INTERVAL;
+
+    std::chrono::microseconds checkDFUAvailableInterval = DEFAULT_CHECK_DFU_AVAILABLE_INTERVAL;
+
+    std::chrono::microseconds waitForDFUTimeout = DEFAULT_AIT_FOR_DFU_TIMEOUT;
+
+};
+
 /**
  * @brief Perform initial setup of Host DFU.
-
  * 
+ * @param config    Configuration parameters controlling the DFU process.
  * @return true     DFU setup was successful.
  * @return false    DFU setup was not successful.
  */
-bool dfuSetup();
+bool dfuSetup(const DFUConfig& config = DFUConfig());
 
 /**
  * @brief "Feeds" the DFU task, which breaks up DFU operations into small pieces so that it is non-blocking. Typically, each
@@ -116,12 +148,4 @@ constexpr const char *productVersion() {
 // Return the firmware's version, which is both stored within the image and which is verified by DFU
 constexpr const char *firmwareVersion() {
     return &FIRMWARE_VERSION[strlen(FIRMWARE_VERSION_HEADER)];
-}
-
-bool _dfuSetup();
-
-inline bool dfuSetup() {
-    // DFUUpdater updater;
-    // isPlatformSupported(updater);
-    return _dfuSetup();
 }
