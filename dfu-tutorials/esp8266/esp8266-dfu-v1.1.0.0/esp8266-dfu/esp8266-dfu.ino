@@ -4,18 +4,25 @@
 // copyright holder including that found in the LICENSE file.
 
 #include <Notecard.h>
-
+#include <notecard-cpp.h>
 #include "dfu.h"
 
-#if !defined(ARDUINO_ARCH_ESP8266) && !defined(ARDUINO_ARCH_ESP32)
-#error "this sketch exclusively targets the ESP8266 or the ESP32."
+
+#if defined(ARDUINO_ARCH_ESP8266)
+    static_assert(check_version(version(ARDUINO_ESP8266_MAJOR, ARDUINO_ESP8266_MINOR), version(3, 1)), "ESP8266 version should be 3.1.0 or newer");
+    #define buttonPin           NOT_A_PIN
+    #define buttonPressedState  LOW
+#elif defined(ARDUINO_ARCH_ESP32)
+//static_assert(check_version(version(ARDUINO_ESPRESSIF32_MAJOR, ARDUINO_ESPRESSIF_MINOR), version(3, 1)), "ESP32 version should be 3.1.0 or newer");
+    #define buttonPin           21
+    #define buttonPressedState  LOW
+#else
+    #error "this sketch exclusively targets the ESP8266 or the ESP32."
 #endif
 
 #define DFU_ENABLED true
 
 // Define pin numbers based on the Feather and the Notecarrier-AF's user push button
-#define buttonPin           NOT_A_PIN
-#define buttonPressedState  LOW
 #define ledPin              LED_BUILTIN
 
 // Note that both of these definitions are optional; just prefix either line with // to remove it.
