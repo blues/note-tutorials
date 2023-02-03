@@ -7,8 +7,8 @@
 
 #include "dfu.h"
 
-#ifndef ARDUINO_ARCH_ESP8266
-#error "this sketch exclusively targets the ESP8266 because it uses UpdaterClass from the BSP."
+#if !defined(ARDUINO_ARCH_ESP8266) && !defined(ARDUINO_ARCH_ESP32)
+#error "this sketch exclusively targets the ESP8266 or the ESP32."
 #endif
 
 #define DFU_ENABLED true
@@ -138,12 +138,14 @@ void loop() {
         temperature = JGetNumber(rsp, "value");
         notecard.deleteResponse(rsp);
     }
+#if PRODUCT_MINOR >= 1
     double voltage = 0;
     rsp = notecard.requestAndResponse(notecard.newRequest("card.voltage"));
     if (rsp != NULL) {
         voltage = JGetNumber(rsp, "value");
         notecard.deleteResponse(rsp);
     }
+#endif
     // Enqueue the measurement to the Notecard for transmission to the Notehub.	 These measurements
     // will be staged in the Notecard's flash memory until it's time to transmit them to the service.
     J *req = notecard.newRequest("note.add");

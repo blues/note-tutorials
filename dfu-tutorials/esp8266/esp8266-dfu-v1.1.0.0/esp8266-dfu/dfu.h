@@ -5,13 +5,83 @@
 #define STRINGIFY_(x) #x
 
 #include "dfu-version.h"
-
+#include "dfu-updater.h"
 
 extern Notecard notecard;
 
-// dfu.cpp
-void dfuSetup();
-void dfuPoll(bool force);
+/**
+ * @brief Perform initial setup of Host DFU.
+
+ * 
+ * @return true     DFU setup was successful.
+ * @return false    DFU setup was not successful.
+ */
+bool dfuSetup();
+
+/**
+ * @brief "Feeds" the DFU task, which breaks up DFU operations into small pieces so that it is non-blocking. Typically, each
+ * call to dfuPoll() sends one request to the Notecard.
+ * 
+ * @param force     Determines whether the DFU task should act periodically or immediately.
+ *  When false, the DFU task will self-govern how often it communicates with the Notecard.
+ *  When true, the request is sent immediately without any delay. This is typically done in response to user input, such
+ *  as pressing a button, or some other infrequent event.
+ * 
+ * @return uint32_t Duration in milliseconds that the task will wait before proceeding with the next DFU related operation. This is advisory
+ * only - you can call dfuPoll() as often as you wish. In cases where the system is running with Cooperative or Preemptive
+ * multitasking (e.g. an RTOS) this value can be used to put the task to sleep for the given duration.
+ */
+uint32_t dfuPoll(bool force=false);
+
+// org name is optional
+#ifndef PRODUCT_ORG_NAME
+#define PRODUCT_ORG_NAME ""
+#endif
+
+// display name must be defined
+#ifndef PRODUCT_DISPLAY_NAME
+#error PRODUCT_DISPLAY_NAME not defined
+#endif
+
+// description is optional
+#ifndef PRODUCT_DESC
+#define PRODUCT_DESC ""
+#endif
+
+#ifndef PRODUCT_FIRMWARE_ID
+#error PRODUCT_FIRMWARE_ID not defined. Please define it to identify the firmware, e.g. my-product-v1
+#endif
+
+#ifndef PRODUCT_MAJOR
+#error PRODUCT_MAJOR is not defined. This must be set to the major version of the firmware being built.
+#endif
+
+#ifndef PRODUCT_MINOR
+#error PRODUCT_MINOR is not defined. This must be set to the major version of the firmware being built.
+#endif
+
+#ifndef PRODUCT_PATCH
+#define PRODUCT_PATCH 0
+#endif
+
+#ifndef PRODUCT_BUILD
+#define PRODUCT_BUILD 0
+#endif
+
+// PRODUCT_VERSION is optional. The version string is built from the version number components
+#ifndef PRODUCT_VERSION
+#define PRODUCT_VERSION         STRINGIFY(PRODUCT_MAJOR) "." STRINGIFY(PRODUCT_MINOR) "." STRINGIFY(PRODUCT_PATCH)
+#endif
+
+// PRODUCT_BUILT defaults to the current built date and time
+#ifndef PRODUCT_BUILT
+#define PRODUCT_BUILT           __DATE__ " " __TIME__
+#endif
+
+// PRODUCT_BUILDER is optional
+#ifndef PRODUCT_BUILDER
+#define PRODUCT_BUILDER         ""
+#endif
 
 
 // This is a product configuration JSON structure that enables the Notehub to recognize this
@@ -35,11 +105,19 @@ void dfuPoll(bool force);
 
 // In the Arduino IDE, the ino is built regardless of whether or not it is modified.  As such, it's a perfect
 // place to serve up the build version string because __DATE__ and __TIME__ are updated properly for each build.
-constexpr inline const char *productVersion() {
+constexpr const char *productVersion() {
     return ("Ver " PRODUCT_VERSION " " PRODUCT_BUILT);
 }
 
 // Return the firmware's version, which is both stored within the image and which is verified by DFU
-constexpr inline const char *firmwareVersion() {
+constexpr const char *firmwareVersion() {
     return &FIRMWARE_VERSION[strlen(FIRMWARE_VERSION_HEADER)];
+}
+
+bool _dfuSetup();
+
+inline bool dfuSetup() {
+    // DFUUpdater updater;
+    // isPlatformSupported(updater);
+    return _dfuSetup();
 }
