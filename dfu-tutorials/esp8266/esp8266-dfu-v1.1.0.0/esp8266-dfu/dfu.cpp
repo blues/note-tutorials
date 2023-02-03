@@ -117,6 +117,7 @@ class DFU
    * @brief The current state the DFU process is in.
    */
   State state = State::INITIAL;
+  bool newState;
 
   /**
    * @brief How many retries. This is set when transitioning to the state.
@@ -210,11 +211,11 @@ public:
   uint32_t poll(bool force)
   {
     int32_t remaining = next.remaining();
-    if (!force && remaining > 0)
+    if (!newState && !force && remaining > 0)
     {
       return remaining;
     }
-
+    newState = false;
     notecard.logDebugf("running state %d\n", state);
     runState();
 
@@ -224,7 +225,6 @@ public:
       remaining = 0;
     }
     notecard.logDebugf("poll %d\n", remaining);
-    delay(500);
     return uint32_t(remaining);
   }
 
@@ -287,6 +287,8 @@ private:
    */
   void transitionTo(State state)
   {
+    newState = (state!=this->state);
+
     switch (state)
     {
     case State::UNAVAILABLE:
@@ -638,8 +640,7 @@ private:
     }
     JAddNumberToObject(req, "offset", offset);
     JAddNumberToObject(req, "length", thislen);
-    auto scoped_rsp = scoped_response(notecard.requestAndResponse(req));
-    auto rsp = scoped_rsp.get(); // wish we had implicit conversion
+    auto rsp = scoped_response(notecard.requestAndResponse(req));
     if (!rsp)
     {
       notecard.logDebugf("dfu: insufficient memory\n");
@@ -656,15 +657,14 @@ private:
       notecard.logDebugf("dfu: no payload\n");
       return false;
     }
-    auto scoped_payload = scoped_malloc(JB64DecodeLen(payloadB64));
-    auto payload = scoped_payload.get();
+    auto payload = scoped_malloc(JB64DecodeLen(payloadB64));
     if (!payload)
     {
       notecard.logDebugf("dfu: can't allocate payload decode buffer\n");
       return false;
     }
 
-    uint32_t actuallen = uint32_t(JB64Decode((char *)payload, payloadB64));
+    uint32_t actuallen = uint32_t(JB64Decode(payload, payloadB64));
     const char *expectedMD5 = JGetString(rsp, "status");
     char chunkMD5[NOTE_MD5_HASH_STRING_SIZE] = {0};
     NoteMD5HashString(payload, actuallen, chunkMD5, sizeof(chunkMD5));
@@ -679,7 +679,7 @@ private:
       notecard.logDebugf("dfu: %d-byte decoded data MD5 mismatch (%s != actual %s)\n", actuallen, expectedMD5, chunkMD5);
       return false;
     }
-    currentChunk = std::move(scoped_payload);
+    currentChunk = std::move(payload);
     currentChunkLength = thislen;
     return true;
   }
@@ -691,10 +691,10 @@ private:
     currentChunkLength = 0;
 
     // MD5 the chunk
-    NoteMD5Update(&md5Context, payload.get(), thislen);
+    NoteMD5Update(&md5Context, payload, thislen);
 
     // Write the chunk
-    updater.write(payload.get(), thislen);
+    updater.write(payload, thislen);
     if (updater.hasError())
     {
       return false;
