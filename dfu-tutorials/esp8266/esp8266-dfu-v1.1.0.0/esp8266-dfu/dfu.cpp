@@ -10,7 +10,7 @@
 #include <chrono>
 #include <Arduino.h>
 #include <Notecard.h>
-#include "dfu.h"
+#include "notecard-host-dfu.h"
 #include "notecard-cpp.h"
 #include "TicksTimer.h"
 #include "dfu-updater.h"
@@ -364,7 +364,8 @@ private:
       {
         retry(State::CHECK_DFU_AVAILABLE);
       }
-
+      break;
+      
     case State::CHECK_DFU_MODE:
       if (checkDFUMode())
       {

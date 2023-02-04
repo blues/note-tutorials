@@ -4,16 +4,13 @@
 // copyright holder including that found in the LICENSE file.
 
 #include <Notecard.h>
-#include "notecard-cpp.h"
-#include "dfu.h"
+#include "notecard-host-dfu.h"
 
 
 #if defined(ARDUINO_ARCH_ESP8266)
-    static_assert(check_version(version(ARDUINO_ESP8266_MAJOR, ARDUINO_ESP8266_MINOR), version(3, 1)), "ESP8266 version should be 3.1.0 or newer");
     #define buttonPin           NOT_A_PIN
     #define buttonPressedState  LOW
 #elif defined(ARDUINO_ARCH_ESP32)
-//static_assert(check_version(version(ARDUINO_ESPRESSIF32_MAJOR, ARDUINO_ESPRESSIF_MINOR), version(3, 1)), "ESP32 version should be 3.1.0 or newer");
     #define buttonPin           21
     #define buttonPressedState  LOW
 #else

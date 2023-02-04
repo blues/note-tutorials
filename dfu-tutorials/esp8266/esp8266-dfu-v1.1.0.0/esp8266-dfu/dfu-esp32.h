@@ -4,7 +4,7 @@
 // copyright holder including that found in the LICENSE file.
 #pragma once
 
-#if defined(ARDUINO_ARCH_ESP32) || 1
+#if defined(ARDUINO_ARCH_ESP32)
 
 #include <Arduino.h>
 #include <Notecard.h>

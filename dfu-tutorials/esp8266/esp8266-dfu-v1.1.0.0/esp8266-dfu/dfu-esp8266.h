@@ -6,12 +6,15 @@
 
 #ifdef ARDUINO_ARCH_ESP8266
 
-#include "dfu.h"
+#include "notecard-host-dfu.h"
 #include "Updater.h"
+#include "check_version.h"
+
 
 class ArduinoESP8266DFUUpdater {
 public:
     bool setup() {
+        static_assert(check_version(version(ARDUINO_ESP8266_MAJOR, ARDUINO_ESP8266_MINOR), version(3, 1)), "ESP8266 version should be 3.1.0 or newer");
 
         notecard.logDebugf("dfu: free space %d bytes\n", ESP.getFreeSketchSpace());
 
