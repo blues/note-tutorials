@@ -4,7 +4,7 @@
 // copyright holder including that found in the LICENSE file.
 
 #include <Notecard.h>
-#include <notecard-cpp.h>
+#include "notecard-cpp.h"
 #include "dfu.h"
 
 
@@ -133,7 +133,7 @@ void loop() {
 
     static uint32_t lastEvent = millis();
 
-    if ((millis()-lastEvent)<5000) 
+    if ((millis()-lastEvent)<5000)
         return;
     lastEvent = millis();
 
