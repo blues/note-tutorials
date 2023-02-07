@@ -12,7 +12,7 @@
 #include "esp_system.h"
 #include "esp_ota_ops.h"
 #include "esp_flash_partitions.h"
-#include "dfu.h"
+#include "notecard-host-dfu.h"
 
 
 class ArduinoESP32DFUUpdater {

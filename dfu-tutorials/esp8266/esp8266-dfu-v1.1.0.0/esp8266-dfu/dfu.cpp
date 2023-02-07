@@ -203,6 +203,9 @@ public:
     if (!ok) {
       transitionTo(State::UNAVAILABLE);
     }
+    else {
+      transitionTo(State::INITIAL);
+    }
     return ok;
   }
 
@@ -324,7 +327,12 @@ private:
     switch (state)
     {
     case State::INITIAL:
-      transitionTo(State::REPORT_CURRENT_VERSION);
+      if (cancelOutboardDFU()) {
+        transitionTo(State::REPORT_CURRENT_VERSION);
+      }
+      else {
+        retry(State::INITIAL);
+      }
       break;
 
     case State::REPORT_CURRENT_VERSION:
@@ -365,7 +373,7 @@ private:
         retry(State::CHECK_DFU_AVAILABLE);
       }
       break;
-      
+
     case State::CHECK_DFU_MODE:
       if (checkDFUMode())
       {
@@ -460,7 +468,18 @@ private:
       transitionTo(state);
       break;
     }
+  }
 
+  /**
+   * @brief Ensure that card.dfu is not active so that DFU is performed via the Host MCU. 
+   * 
+   * @return true   The request was successfully sent.
+   * @return false  The request was not sent and should be retried.
+   */
+  bool cancelOutboardDFU() {
+    J *req = notecard.newRequest("card.dfu");
+    JAddBoolToObject(req, "off", true);
+    return notecard.sendRequest(req);
   }
 
   /**
