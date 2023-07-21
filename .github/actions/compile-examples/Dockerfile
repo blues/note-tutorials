@@ -58,11 +58,9 @@ RUN ["dash", "-c", "\
      python-is-python3 \
      python3 \
      python3-pip \
+     python3.11-venv \
      ssh \
      tree \
- && pip install \
-     adafruit-nrfutil \
-     pyserial \
  && apt-get clean \
  && apt-get purge \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
@@ -85,7 +83,12 @@ RUN ["dash", "-c", "\
 # Configure Arduino CLI
 USER ${USER}
 RUN ["dash", "-c", "\
-    arduino-cli config init \
+    python3 -m venv ~/.venv \
+ && . ~/.venv/bin/activate \
+ && pip install \
+     adafruit-nrfutil \
+     pyserial \
+ && arduino-cli config init \
  && arduino-cli config add board_manager.additional_urls \
      https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json \
      https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json \
