@@ -6,7 +6,7 @@ inputs:
     description: "Comma separated list of libraries to fetch"
     required: false
   sketch:
-    description: "Directory relative to the root of the sketch to compile"    
+    description: "Directory relative to the root of the sketch to compile"
     required: true
   fully-qualified-board-name:
     description: "The fqbn of the board to compile the sketch for"
