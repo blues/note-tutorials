@@ -5,8 +5,9 @@ LOG_LEVEL="$3"
 LIBS="$4"
 
 HOME=/home/blues
-ls $HOME
-source $HOME/venv/bin/activate
+pwd
+ls -al
+source /venv/bin/activate
 
 IFS=','
 read -ra libraries <<< "$LIBS"

@@ -69,12 +69,12 @@ RUN ["dash", "-c", "\
 # Download/Install Arduino CLI
 RUN ["dash", "-c", "\
     python3 -m venv venv \
- && . venv/bin/activate \
+ && . /venv/bin/activate \
  && pip install \
      adafruit-nrfutil \
      pyserial \
- &&  pwd \
- &&  ls -al \
+ && pwd \
+ && ls -al \
  && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=${BINDIR} sh -s ${ARDUINO_CLI_VERSION} \
  && mkdir -p /etc/bash_completion.d/ \
  && arduino-cli completion bash > /etc/bash_completion.d/arduino-cli.sh \
