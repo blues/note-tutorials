@@ -20,7 +20,7 @@ runs:
   image: './Dockerfile'
   entrypoint: 'bash'
   args:
-    - . ~/.venv/bin/activate
+    - . /home/blues/.venv/bin/activate
     - ".github/actions/compile-examples/compile.sh"
     - ${{ inputs.sketch }}
     - ${{ inputs.fully-qualified-board-name }}
