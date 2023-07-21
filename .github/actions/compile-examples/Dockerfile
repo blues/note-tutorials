@@ -68,7 +68,12 @@ RUN ["dash", "-c", "\
 
 # Download/Install Arduino CLI
 RUN ["dash", "-c", "\
-    curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=${BINDIR} sh -s ${ARDUINO_CLI_VERSION} \
+    python3 -m venv venv \
+ && . venv/bin/activate \
+ && pip install \
+    adafruit-nrfutil \
+    pyserial \
+ && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=${BINDIR} sh -s ${ARDUINO_CLI_VERSION} \
  && mkdir -p /etc/bash_completion.d/ \
  && arduino-cli completion bash > /etc/bash_completion.d/arduino-cli.sh \
  && echo >> /etc/bash.bashrc \
@@ -83,12 +88,7 @@ RUN ["dash", "-c", "\
 # Configure Arduino CLI
 USER ${USER}
 RUN ["dash", "-c", "\
-    python3 -m venv ~/.venv \
- && . ~/.venv/bin/activate \
- && pip install \
-     adafruit-nrfutil \
-     pyserial \
- && arduino-cli config init \
+    arduino-cli config init \
  && arduino-cli config add board_manager.additional_urls \
      https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json \
      https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json \
