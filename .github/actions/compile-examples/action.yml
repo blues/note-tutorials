@@ -20,9 +20,6 @@ runs:
   image: './Dockerfile'
   entrypoint: 'bash'
   args:
-    - python -m venv venv
-    - pip install adafruit-nrfutil pyserial
-    - . venv/bin/activate
     - ".github/actions/compile-examples/compile.sh"
     - ${{ inputs.sketch }}
     - ${{ inputs.fully-qualified-board-name }}

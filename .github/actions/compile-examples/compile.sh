@@ -4,6 +4,11 @@ BOARD="$2"
 LOG_LEVEL="$3"
 LIBS="$4"
 
+python -m venv venv
+pip install adafruit-nrfutil pyserial
+. venv/bin/activate
+
+
 HOME=/home/blues
 IFS=','
 read -ra libraries <<< "$LIBS"
