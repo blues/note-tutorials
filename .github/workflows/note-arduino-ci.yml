@@ -14,15 +14,6 @@ jobs:
       max-parallel: 1
       matrix:
         include:
-          - sketch: dfu-tutorials/esp8266/esp8266-dfu-v1.0.0.0/esp8266-dfu
-            fully-qualified-board-name: esp8266:esp8266:huzzah
-            libraries: "Blues Wireless Notecard"
-          - sketch: dfu-tutorials/esp8266/esp8266-dfu-v1.1.0.0/esp8266-dfu
-            fully-qualified-board-name: esp8266:esp8266:huzzah
-            libraries: "Blues Wireless Notecard"
-          - sketch: dfu-tutorials/esp8266/esp8266-dfu-v1.1.0.0/esp8266-dfu
-            fully-qualified-board-name: esp32:esp32:featheresp32
-            libraries: "Blues Wireless Notecard"
           - sketch: notecard-guides/arduino-wiring/FileAttentionInterrupt/FileAttentionInterrupt.ino
             fully-qualified-board-name: esp32:esp32:featheresp32
             libraries: "Blues Wireless Notecard"
