@@ -97,7 +97,7 @@ void setup()
   if (rsp != NULL) {
     refreshEnvironmentVarCache(rsp);
     notecard.deleteResponse(rsp);
-	}
+  }
 }
 
 // In the Arduino main loop which is called repeatedly, add outbound data every
@@ -195,14 +195,14 @@ void refreshEnvironmentVarCache(J *rsp)
     envHeartbeatMins = DATA_SEND_MINS;
   }
 
-	// See if the notecard has been rebooted, and reboot ourselves if so
+  // See if the notecard has been rebooted, and reboot ourselves if so
   rsp = notecard.requestAndResponse(notecard.newRequest("card.status"));
-	uint32_t lastBootTime = JGetNumber(rsp, "time");
-	if (lastBootTime != 0) {
-	  if (notecardBootTime != 0 && lastBootTime != notecardBootTime)
+  uint32_t lastBootTime = JGetNumber(rsp, "time");
+  if (lastBootTime != 0) {
+    if (notecardBootTime != 0 && lastBootTime != notecardBootTime)
     {
       NVIC_SystemReset();
-		}
+    }
     notecardBootTime = lastBootTime;
   }
   notecard.deleteResponse(rsp);
