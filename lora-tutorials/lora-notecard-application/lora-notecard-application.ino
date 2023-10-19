@@ -56,13 +56,16 @@ void setup()
   }
 
   // The LoRa Notecard Requires Environment Variables to be templated
-  req = notecard.newRequest("env.template");
-  J *body = JCreateObject();
-	JAddNumberToObject(body, VAR_MINUTES, TUINT16);
-  JAddItemToObject(req, "body", body);
-  if (!notecard.sendRequest(req)) {
-	  debug.println("unable to set env template");
-	}
+  if (J *req = notecard.newRequest("env.template")) {
+    if (J *body = JAddObjectToObject(req, "body")) {
+      JAddNumberToObject(body, VAR_MINUTES, TUINT16);
+      if (!notecard.sendRequest(req)) {
+        debug.println("unable to set env template");
+      }
+    } else {
+      JDelete(req);
+    }
+  }
 
   /// Notefile Template for Data
   req = notecard.newRequest("note.template");
