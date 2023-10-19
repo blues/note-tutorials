@@ -94,8 +94,8 @@ void setup()
 
   // Load the environment vars for the first time
   J *rsp = notecard.requestAndResponse(notecard.newRequest("env.get"));
-	if (rsp != NULL) {
-		refreshEnvironmentVarCache(rsp);
+  if (rsp != NULL) {
+    refreshEnvironmentVarCache(rsp);
     notecard.deleteResponse(rsp);
 	}
 }
@@ -118,14 +118,14 @@ void loop()
     nextEnvPollMs = millis() + (ENV_POLL_SECS * 1000);
 
     J *req = notecard.newRequest("env.get");
-	  JAddNumberToObject(req, "time", environmentModifiedTime);
-	  J *rsp = notecard.requestAndResponse(req);
-		if (rsp != NULL) {
-			if (!notecard.responseError(rsp)) {
-				refreshEnvironmentVarCache(rsp);
-			}
-			notecard.deleteResponse(rsp);
-		}
+    JAddNumberToObject(req, "time", environmentModifiedTime);
+    J *rsp = notecard.requestAndResponse(req);
+    if (rsp != NULL) {
+      if (!notecard.responseError(rsp)) {
+        refreshEnvironmentVarCache(rsp);
+      }
+      notecard.deleteResponse(rsp);
+    }
   }
 
   // On a periodic basis, check the inbound queue for messages.  In a
@@ -186,28 +186,30 @@ void refreshEnvironmentVarCache(J *rsp)
   // Update the environment
   J *body = JGetObject(rsp, "body");
   if (body == NULL) {
-		return;
-	}
+    return;   
+  }
 
-	// Update heartbeat period
-	envHeartbeatMins = JAtoN(JGetString(body, TVAR_MINUTES), NULL);
-	if (envHeartbeatMins == 0) {
-		envHeartbeatMins = DATA_SEND_MINS;
-	}
+  // Update heartbeat period
+  envHeartbeatMins = JAtoN(JGetString(body, TVAR_MINUTES), NULL);
+  if (envHeartbeatMins == 0) {
+    envHeartbeatMins = DATA_SEND_MINS;
+  }
 
 	// See if the notecard has been rebooted, and reboot ourselves if so
   rsp = notecard.requestAndResponse(notecard.newRequest("card.status"));
 	uint32_t lastBootTime = JGetNumber(rsp, "time");
 	if (lastBootTime != 0) {
-	  if (notecardBootTime != 0 && lastBootTime != notecardBootTime) {
-			NVIC_SystemReset();
+	  if (notecardBootTime != 0 && lastBootTime != notecardBootTime)
+    {
+      NVIC_SystemReset();
 		}
-		notecardBootTime = lastBootTime;
-	}
+    notecardBootTime = lastBootTime;
+  }
   notecard.deleteResponse(rsp);
 }
 
-void sendDataToNotecard() {
+void sendDataToNotecard()
+{
   // Get simulated data from the card.temp and voltage
   double temperature = 0;
   J *rsp = notecard.requestAndResponse(notecard.newRequest("card.temp"));
