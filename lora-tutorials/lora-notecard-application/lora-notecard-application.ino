@@ -46,13 +46,14 @@ void setup()
   notecard.setDebugOutputStream(debug);
 	notecard.begin();
 
-  J *req = notecard.newRequest("hub.set");
-  JAddStringToObject(req, "product", PRODUCT_UID);
-  JAddStringToObject(req, "mode", "continuous");
-  JAddBoolToObject(req, "sync", true);
-  JAddNumberToObject(req, "inbound", 1);
-  JAddNumberToObject(req, "outbound", 15);
-  notecard.sendRequestWithRetry(req, 5);
+  if (J *req = notecard.newRequest("hub.set")) {
+    JAddStringToObject(req, "product", PRODUCT_UID);
+    JAddStringToObject(req, "mode", "continuous");
+    JAddBoolToObject(req, "sync", true);
+    JAddNumberToObject(req, "inbound", 1);
+    JAddNumberToObject(req, "outbound", 15);
+    notecard.sendRequestWithRetry(req, 5);
+  }
 
   // The LoRa Notecard Requires Environment Variables to be templated
   req = notecard.newRequest("env.template");
