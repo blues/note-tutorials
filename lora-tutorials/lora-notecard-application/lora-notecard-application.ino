@@ -44,7 +44,7 @@ void setup()
   Wire.begin();
 
   notecard.setDebugOutputStream(debug);
-	notecard.begin();
+  notecard.begin();
 
   if (J *req = notecard.newRequest("hub.set")) {
     JAddStringToObject(req, "product", PRODUCT_UID);
