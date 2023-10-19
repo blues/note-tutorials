@@ -1,21 +1,19 @@
 #include <Notecard.h>
 
 // Notefile Definitions
-#define	DATA_NOTEFILE		     "data.qo"
-#define	DATA_PORT            1
-#define INBOUND_NOTEFILE     "poll.qi"
-#define INBOUND_PORT         2
+#define	DATA_NOTEFILE       "data.qo"
+#define	DATA_PORT           1
+#define INBOUND_NOTEFILE    "poll.qi"
+#define INBOUND_PORT        2
 
-#define FIELD_TEMPERATURE    "temperature"
-#define FIELD_VOLTAGE        "voltage"
-#define FIELD_POLL           "poll"
+#define TVAR_TEMPERATURE   "temperature"
+#define TVAR_VOLTAGE       "voltage"
+#define TVAR_POLL          "poll"
+#define	TVAR_MINUTES        "minutes"
 
-#define INBOUND_NOTEFILE_POLL_SECS 10
-#define ENV_POLL_SECS              10
-#define DATA_SEND_MINS             5
-
-// Environment variable definitions
-#define	VAR_MINUTES	"minutes"
+#define INBOUND_NOTEFILE_POLL_SECS  10
+#define ENV_POLL_SECS               10
+#define DATA_SEND_MINS              5
 
 // Cached values of the above environment variable
 uint32_t envHeartbeatMins;
@@ -41,8 +39,6 @@ void setup()
   while (!debug);
   debug.println("*** " __DATE__ " " __TIME__ " ***");
   
-  Wire.begin();
-
   notecard.setDebugOutputStream(debug);
   notecard.begin();
 
@@ -58,7 +54,7 @@ void setup()
   // The LoRa Notecard Requires Environment Variables to be templated
   if (J *req = notecard.newRequest("env.template")) {
     if (J *body = JAddObjectToObject(req, "body")) {
-      JAddNumberToObject(body, VAR_MINUTES, TUINT16);
+      JAddNumberToObject(body, TVAR_MINUTES, TUINT16);
       if (!notecard.sendRequest(req)) {
         debug.println("unable to set env template");
       }
@@ -72,8 +68,8 @@ void setup()
     JAddStringToObject(req, "file", DATA_NOTEFILE);
     JAddNumberToObject(req, "port", DATA_PORT);
     if (J *body = JAddObjectToObject(req, "body")) {
-      JAddNumberToObject(body, FIELD_TEMPERATURE, TFLOAT32);
-      JAddNumberToObject(body, FIELD_VOLTAGE, TFLOAT32);
+      JAddNumberToObject(body, TVAR_TEMPERATURE, TFLOAT32);
+      JAddNumberToObject(body, TVAR_VOLTAGE, TFLOAT32);
       JAddNumberToObject(body, "_time", TINT32);
       if (!notecard.sendRequest(req)) {
         debug.println("unable to set data template");
@@ -89,7 +85,7 @@ void setup()
   JAddNumberToObject(req, "port", INBOUND_PORT);
 
   body = JCreateObject();
-  JAddBoolToObject(body, FIELD_POLL, true);
+  JAddBoolToObject(body, TVAR_POLL, true);
 
   JAddItemToObject(req, "body", body);
   if (!notecard.sendRequest(req)) {
@@ -172,7 +168,7 @@ void loop()
 
                   // Simulate Processing the response here
                   notecard.logDebug("INBOUND REQUEST: ");
-                  notecard.logDebug(JGetString(body, FIELD_POLL));
+                  notecard.logDebug(JGetString(body, TVAR_POLL));
                   notecard.logDebug("\n\n");
               }
           }
@@ -194,7 +190,7 @@ void refreshEnvironmentVarCache(J *rsp)
 	}
 
 	// Update heartbeat period
-	envHeartbeatMins = JAtoN(JGetString(body, VAR_MINUTES), NULL);
+	envHeartbeatMins = JAtoN(JGetString(body, TVAR_MINUTES), NULL);
 	if (envHeartbeatMins == 0) {
 		envHeartbeatMins = DATA_SEND_MINS;
 	}
@@ -238,8 +234,8 @@ void sendDataToNotecard() {
     J *body = JAddObjectToObject(req, "body");
     if (body != NULL)
     {
-      JAddNumberToObject(body, "temperature", temperature);
-      JAddNumberToObject(body, "voltage", voltage);
+      JAddNumberToObject(body, TVAR_TEMPERATURE, temperature);
+      JAddNumberToObject(body, TVAR_VOLTAGE, voltage);
     }
     notecard.sendRequest(req);
   }
