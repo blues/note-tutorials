@@ -68,18 +68,19 @@ void setup()
   }
 
   /// Notefile Template for Data
-  req = notecard.newRequest("note.template");
-  JAddStringToObject(req, "file", DATA_NOTEFILE);
-  JAddNumberToObject(req, "port", DATA_PORT);
-
-  body = JCreateObject();
-  JAddNumberToObject(body, FIELD_TEMPERATURE, TFLOAT32);
-  JAddNumberToObject(body, FIELD_VOLTAGE, TFLOAT32);
-  JAddNumberToObject(body, "_time", TINT32);
-
-  JAddItemToObject(req, "body", body);
-  if (!notecard.sendRequest(req)) {
-    debug.println("unable to set data template");
+  if (J *req = notecard.newRequest("note.template")) {
+    JAddStringToObject(req, "file", DATA_NOTEFILE);
+    JAddNumberToObject(req, "port", DATA_PORT);
+    if (J *body = JAddObjectToObject(req, "body")) {
+      JAddNumberToObject(body, FIELD_TEMPERATURE, TFLOAT32);
+      JAddNumberToObject(body, FIELD_VOLTAGE, TFLOAT32);
+      JAddNumberToObject(body, "_time", TINT32);
+      if (!notecard.sendRequest(req)) {
+        debug.println("unable to set data template");
+      }
+    } else {
+      JDelete(req);
+    }
   }
 
   // Notefile Template for Inbound
