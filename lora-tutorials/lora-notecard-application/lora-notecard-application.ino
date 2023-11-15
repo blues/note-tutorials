@@ -24,13 +24,20 @@ uint32_t notecardBootTime = 0;
 
 HardwareSerial debug(PIN_VCP_RX, PIN_VCP_TX);
 
+// Uncomment this line and replace com.your-company:your-product-name with your
+// ProductUID.
+// #define PRODUCT_UID "com.your-company:your-product-name"
+
 // This is the unique Product Identifier for your device
 #ifndef PRODUCT_UID
-#define PRODUCT_UID "" // "com.my-company.my-name:my-project"
+#define PRODUCT_UID ""
 #pragma message "PRODUCT_UID is not defined in this example. Please ensure your Notecard has a product identifier set before running this example or define it in code here. More details at https://dev.blues.io/tools-and-sdks/samples/product-uid"
 #endif
 
 Notecard notecard;
+
+void refreshEnvironmentVarCache(J *rsp);
+void sendDataToNotecard();
 
 // One-time Arduino initialization
 void setup()
@@ -80,11 +87,11 @@ void setup()
   }
 
   // Notefile Template for Inbound
-  req = notecard.newRequest("note.template");
+  J *req = notecard.newRequest("note.template");
   JAddStringToObject(req, "file", INBOUND_NOTEFILE);
   JAddNumberToObject(req, "port", INBOUND_PORT);
 
-  body = JCreateObject();
+  J *body = JCreateObject();
   JAddBoolToObject(body, TVAR_POLL, true);
 
   JAddItemToObject(req, "body", body);
