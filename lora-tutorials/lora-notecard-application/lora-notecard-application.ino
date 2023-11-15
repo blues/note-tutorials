@@ -36,6 +36,9 @@ HardwareSerial debug(PIN_VCP_RX, PIN_VCP_TX);
 
 Notecard notecard;
 
+void refreshEnvironmentVarCache(J *rsp);
+void sendDataToNotecard();
+
 // One-time Arduino initialization
 void setup()
 {
