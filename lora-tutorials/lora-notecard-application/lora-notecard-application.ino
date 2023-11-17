@@ -43,7 +43,8 @@ void sendDataToNotecard();
 void setup()
 {
   debug.begin(115200);
-  while (!debug);
+  const size_t usb_timeout_ms = 3000;
+  for (const size_t start_ms = ::millis(); !debug && (::millis() - start_ms) < usb_timeout_ms;);
   debug.println("*** " __DATE__ " " __TIME__ " ***");
   
   notecard.setDebugOutputStream(debug);
