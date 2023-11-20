@@ -5,6 +5,10 @@ LOG_LEVEL="$3"
 LIBS="$4"
 
 HOME=/home/blues
+pwd
+ls -al
+source /venv/bin/activate
+
 IFS=','
 read -ra libraries <<< "$LIBS"
 for lib in "${libraries[@]}"; do
@@ -20,7 +24,7 @@ done
 
 
 arduino-cli compile \
-      --build-property compiler.cpp.extra_flags='-Wno-unused-parameter -Werror' \
+      --build-property compiler.cpp.extra_flags=' -Wno-unused-parameter -Werror' \
       --fqbn "$BOARD" \
       --log-level $LOG_LEVEL \
       --warnings all \

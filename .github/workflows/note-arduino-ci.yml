@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     strategy:
-      max-parallel: 1
       matrix:
         include:
           - sketch: notecard-guides/arduino-wiring/FileAttentionInterrupt/FileAttentionInterrupt.ino
@@ -39,7 +38,7 @@ jobs:
             libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"
           - sketch: dfu-tutorials/esp32/esp32-dfu-v1.1.1.1
             fully-qualified-board-name: esp32:esp32:featheresp32
-            libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"
+            libraries: "Blues Wireless Notecard"
           - sketch: gps-tutorials/esp32tracker
             fully-qualified-board-name: esp32:esp32:featheresp32
             libraries: "Blues Wireless Notecard, https://github.com/Seeed-Studio/Seeed_BME680"

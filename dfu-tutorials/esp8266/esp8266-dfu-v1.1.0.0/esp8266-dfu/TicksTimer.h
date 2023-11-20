@@ -1,0 +1,48 @@
+//
+// Copyright 2022 Blues Inc.  All rights reserved.
+// Use of this source code is governed by licenses granted by the
+// copyright holder including that found in the LICENSE file.
+#include <stdint.h>
+#include "Arduino.h"
+
+/**
+ * @brief Provides a duration timer that can measure durations up to 2^31-1 milliseconds safely with
+ * wrap around when the ticks counter resets to 0 after 2^32 ticks.
+ */
+struct TicksTimer {
+
+    typedef uint32_t ticks_t;
+
+    ticks_t start_time = 0;
+    ticks_t duration = 0;
+
+    inline void set(ticks_t start_time, ticks_t duration) {
+        this->start_time = start_time;
+        this->duration = duration;
+    }
+
+    inline bool hasElapsed(ticks_t current_ticks) {
+        return (current_ticks-start_time)>duration;
+    }
+
+    inline int32_t remaining(time_t current_ticks) {
+        return int32_t(start_time+duration)-current_ticks;
+    }
+};
+
+/**
+ * @brief Convenience class that implements TicksTimer using arduino millis().
+ */
+struct ArduinoTicksTimer: public TicksTimer {
+    inline void set(ticks_t duration) {
+        TicksTimer::set(millis(), duration);
+    }
+
+    inline bool hasElapsed() {
+        return TicksTimer::hasElapsed(millis());
+    }
+
+    inline int32_t remaining() {
+        return TicksTimer::remaining(millis());
+    }
+};

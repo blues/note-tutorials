@@ -3,7 +3,7 @@
 # copyright holder including that found in the LICENSE file.
 
 # Build development environment
-# docker build --file Dockerfile.arduino-cli --tag arduino-cli .
+# docker build . --tag arduino-cli .
 
 # Launch development environment
 # docker run --entrypoint bash --interactive --rm --tty --volume "$(pwd)":/host-volume/ --workdir /host-volume/ arduino-cli
@@ -58,11 +58,9 @@ RUN ["dash", "-c", "\
      python-is-python3 \
      python3 \
      python3-pip \
+     python3.11-venv \
      ssh \
      tree \
- && pip install \
-     adafruit-nrfutil \
-     pyserial \
  && apt-get clean \
  && apt-get purge \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
@@ -70,7 +68,14 @@ RUN ["dash", "-c", "\
 
 # Download/Install Arduino CLI
 RUN ["dash", "-c", "\
-    curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=${BINDIR} sh -s ${ARDUINO_CLI_VERSION} \
+    python3 -m venv venv \
+ && . /venv/bin/activate \
+ && pip install \
+     adafruit-nrfutil \
+     pyserial \
+ && pwd \
+ && ls -al \
+ && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=${BINDIR} sh -s ${ARDUINO_CLI_VERSION} \
  && mkdir -p /etc/bash_completion.d/ \
  && arduino-cli completion bash > /etc/bash_completion.d/arduino-cli.sh \
  && echo >> /etc/bash.bashrc \
@@ -92,6 +97,7 @@ RUN ["dash", "-c", "\
      https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/main/package_sparkfun_apollo3_index.json \
      https://raw.githubusercontent.com/adafruit/arduino-board-index/gh-pages/package_adafruit_index.json \
      https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json \
+     http://arduino.esp8266.com/stable/package_esp8266com_index.json \
  && arduino-cli core update-index \
  && arduino-cli core install adafruit:nrf52 \
  && arduino-cli core install adafruit:samd \
@@ -102,6 +108,7 @@ RUN ["dash", "-c", "\
  && arduino-cli core install rp2040:rp2040 \
  && arduino-cli core install SparkFun:apollo3 \
  && arduino-cli core install STMicroelectronics:stm32 \
+ && arduino-cli core install esp8266:esp8266 \
  && arduino-cli lib install \"Adafruit BME680 Library\" \
  && arduino-cli lib install \"Blues Wireless Notecard\" \
 "]
